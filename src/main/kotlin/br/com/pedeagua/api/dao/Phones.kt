@@ -1,11 +1,10 @@
 package br.com.pedeagua.api.dao
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.id.LongIdTable
 
 
-object Phones : Table() {
+object Phones : LongIdTable() {
     val ddd = varchar("ddd", 20)
     val number = varchar("number", 20)
     val user = reference("user", Users)
-    override val primaryKey = PrimaryKey(ddd, number)
 }
