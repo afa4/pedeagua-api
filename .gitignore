@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Env file ###
+variables.env
