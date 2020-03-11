@@ -22,6 +22,7 @@ class SecurityConfig(val jwtUtil: JWTUtil, val objectMapper: ObjectMapper) : Web
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/distributors").permitAll()
                 .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
+        http.headers().frameOptions().disable()
         http.addFilter(JWTAuthenticationFilter(authenticationManager(), jwtUtil, objectMapper))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
