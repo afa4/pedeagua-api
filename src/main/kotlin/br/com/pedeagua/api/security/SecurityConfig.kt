@@ -19,7 +19,7 @@ class SecurityConfig(val jwtUtil: JWTUtil, val objectMapper: ObjectMapper) : Web
 
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/distributors").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/v1/distributors").permitAll()
                 .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
         http.headers().frameOptions().disable()
