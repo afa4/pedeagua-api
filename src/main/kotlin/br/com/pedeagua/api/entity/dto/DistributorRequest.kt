@@ -5,10 +5,10 @@ class DistributorRequest(val name: String,
                          val mail: String,
                          val password: String,
                          val address: AddressDTO,
-                         val phones: Array<PhoneDTO>) {
+                         val phones: List<PhoneDTO>) {
     class AddressDTO(val street: String,
                      val number: String,
-                     val complement: String,
+                     val complement: String?,
                      val zipCode: String,
                      val neighbourhood: String)
 
