@@ -7,17 +7,17 @@ import br.com.pedeagua.api.entity.User
 import br.com.pedeagua.api.entity.dto.DistributorRequest
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class DistributorService(val bCryptPasswordEncoder: BCryptPasswordEncoder) {
+class DistributorService(val passwordEncoder: PasswordEncoder) {
 
     fun create(distributorDto: DistributorRequest) {
         transaction {
             val persistedUser = User.new {
                 username = distributorDto.mail
-                password = bCryptPasswordEncoder.encode(distributorDto.password)
+                password = passwordEncoder.encode(distributorDto.password)
             }
 
             val persistedAddress = Address.new {
