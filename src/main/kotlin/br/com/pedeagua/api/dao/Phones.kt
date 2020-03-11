@@ -6,5 +6,5 @@ import org.jetbrains.exposed.dao.id.LongIdTable
 object Phones : LongIdTable() {
     val ddd = varchar("ddd", 20)
     val number = varchar("number", 20)
-    val user = reference("user", Users)
+    val user = reference("user_id", Users)
 }
