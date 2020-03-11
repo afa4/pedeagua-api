@@ -18,22 +18,19 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class SecurityConfig(val jwtUtil: JWTUtil, val objectMapper: ObjectMapper) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/distributors").permitAll()
+        http.csrf().disable()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/distributors").permitAll()
+                .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
         http.addFilter(JWTAuthenticationFilter(authenticationManager(), jwtUtil, objectMapper))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     @Bean
-    override fun userDetailsService(): UserDetailsService {
-        return UserDetailsServiceImpl()
-    }
+    override fun userDetailsService(): UserDetailsService = UserDetailsServiceImpl()
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder())
