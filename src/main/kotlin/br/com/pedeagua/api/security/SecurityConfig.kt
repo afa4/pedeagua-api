@@ -1,5 +1,6 @@
 package br.com.pedeagua.api.security
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -14,13 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(val jwtUtil: JWTUtil) : WebSecurityConfigurerAdapter() {
+class SecurityConfig(val jwtUtil: JWTUtil, val objectMapper: ObjectMapper) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/distributors").permitAll()
                 .anyRequest().authenticated()
-        http.addFilter(JWTAuthenticationFilter(authenticationManager(), jwtUtil = jwtUtil))
+        http.addFilter(JWTAuthenticationFilter(authenticationManager(), jwtUtil, objectMapper))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 

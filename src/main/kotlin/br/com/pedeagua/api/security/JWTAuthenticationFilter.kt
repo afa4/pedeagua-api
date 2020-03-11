@@ -11,7 +11,9 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAuthenticationFilter(authenticationManager: AuthenticationManager, private var jwtUtil: JWTUtil) : UsernamePasswordAuthenticationFilter() {
+class JWTAuthenticationFilter(authenticationManager: AuthenticationManager,
+                              private val jwtUtil: JWTUtil,
+                              private val objectMapper: ObjectMapper) : UsernamePasswordAuthenticationFilter() {
 
     init {
         this.authenticationManager = authenticationManager
@@ -20,7 +22,7 @@ class JWTAuthenticationFilter(authenticationManager: AuthenticationManager, priv
 
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse?): Authentication? {
         try {
-            val credentials = ObjectMapper().readValue(request.reader, Credentials::class.java)
+            val credentials = objectMapper.readValue(request.reader, Credentials::class.java)
             val token = UsernamePasswordAuthenticationToken(credentials.username, credentials.password)
             return authenticationManager.authenticate(token)
         } catch (e: Exception) {
