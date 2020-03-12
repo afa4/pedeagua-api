@@ -1,9 +1,11 @@
 package br.com.pedeagua.api.security
 
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.security.Key
 import java.util.*
 
 @Component
@@ -18,7 +20,13 @@ class JWTUtil {
         return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS256, secret.toByteArray())
+                .signWith(getSigningKey())
                 .compact()
     }
+
+    private fun getSigningKey(): Key {
+        val keyBytes = Decoders.BASE64.decode(secret)
+        return Keys.hmacShaKeyFor(keyBytes)
+    }
+
 }
